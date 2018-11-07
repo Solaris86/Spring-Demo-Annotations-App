@@ -2,11 +2,15 @@ package com.luv2code.springdemo;
 
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FileFortuneService implements FortuneService {
+	
+	private String[] fortunes;
 	
 	@Value("${randomFortune.one}")
 	private String fortuneOne;
@@ -23,9 +27,13 @@ public class FileFortuneService implements FortuneService {
 	@Value("${randomFortune.five}")
 	private String fortuneFive;
 	
+	@PostConstruct
+	public void loadData() {
+		fortunes = new String[] { fortuneOne, fortuneTwo, fortuneThree, fortuneFour, fortuneFive };
+	}
+	
 	@Override
 	public String getFortune() {
-		String[] fortunes = new String[] { fortuneOne, fortuneTwo, fortuneThree, fortuneFour, fortuneFive };
 		Random random = new Random();
 		int index = random.nextInt(fortunes.length);
 		return fortunes[index];
